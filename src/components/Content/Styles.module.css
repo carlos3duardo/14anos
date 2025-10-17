@@ -44,7 +44,7 @@
 
 .subtitle {
   font-family: 'Saira Extra Condensed', sans-serif;
-  font-size: 250%;
+  font-size: 140%;
   font-weight: 500;
   line-height: 1;
   margin-bottom: 7rem;
@@ -57,4 +57,18 @@
   line-height: 1.33;
   margin-bottom: 4rem;
   text-align: justify;
+}
+
+/* lg >= 1024px */
+@media (min-width: 1024px) {
+  .subtitle {
+    font-size: 200%;
+  }
+}
+
+/* xl >= 1280px */
+@media (min-width: 1280px) {
+  .subtitle {
+    font-size: 250%;
+  }
 }

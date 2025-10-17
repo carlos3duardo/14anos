@@ -105,7 +105,7 @@ export function Content() {
         '-=1.5',
       )
       .to(contentRef.current, {
-        duration: 60,
+        duration: 240,
         top: '-560%',
         ease: 'power2.linear',
       })
