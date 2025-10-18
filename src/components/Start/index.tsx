@@ -3,9 +3,9 @@
 import { Heart } from 'lucide-react';
 import { useCallback, useState } from 'react';
 
-import { Content } from '../Content';
+import { Main } from '@/components/Main';
 
-export function Welcome() {
+export function Start() {
   const [started, setStarted] = useState(false);
 
   const handleStart = useCallback(() => {
@@ -13,17 +13,17 @@ export function Welcome() {
   }, []);
 
   if (started) {
-    return <Content />;
+    return <Main />;
   }
 
   return (
-    <section className="absolute top-0 left-0 flex h-screen w-screen flex-col items-center justify-center gap-6">
+    <section className="flex h-dvh w-full flex-col items-center justify-center gap-6">
       <button
         className="relative flex h-12 w-12 cursor-pointer items-center justify-center rounded-full bg-white"
         onClick={() => handleStart()}
       >
         <span className="animate-heartbeat absolute top-0 left-0 h-full w-full animate-ping rounded-full bg-white" />
-        <span className="relative">
+        <span className="relative text-black">
           <Heart size={24} />
         </span>
       </button>

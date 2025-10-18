@@ -1,3 +1,7 @@
-import { Content } from './Content';
+import { LongTimeAgo } from './LongTimeAgo';
+import { Main } from './Main';
+import { Start } from './Start';
+import { TheBestPerson } from './TheBestPerson';
+import { TheMessage } from './TheMessage';
 
-export { Content };
+export { LongTimeAgo, Main, Start, TheBestPerson, TheMessage };
