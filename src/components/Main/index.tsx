@@ -3,9 +3,7 @@
 import { gsap } from 'gsap';
 import { useEffect, useRef } from 'react';
 
-import { LongTimeAgo } from '../LongTimeAgo';
-import ScreenSizeViewer from '../ScreenSizeViewer';
-import { TheBestPerson } from '../TheBestPerson';
+import { LongTimeAgo, TheBestPerson, TheMessage } from '@/components';
 
 export function Main() {
   const intro1Ref = useRef<HTMLDivElement | null>(null);
@@ -15,9 +13,18 @@ export function Main() {
   const fromLogoRef = useRef<HTMLDivElement | null>(null);
   const galaxyLogoRef = useRef<HTMLDivElement | null>(null);
 
+  const messageRef = useRef<HTMLDivElement | null>(null);
+
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   useEffect(() => {
-    return;
     if (!intro1Ref.current) return;
+
+    if (!audioRef.current) {
+      audioRef.current = new Audio('/audio/starwars-intro.mp3');
+      audioRef.current.preload = 'auto';
+      audioRef.current.volume = 1;
+    }
 
     const tl = gsap.timeline();
 
@@ -47,9 +54,14 @@ export function Main() {
         delay: 2,
         ease: 'none',
       })
+      .call(() => {
+        audioRef.current?.play().catch((err) => {
+          console.warn('Não foi possível tocar automaticamente:', err);
+        });
+      })
       .set(mainLogoRef.current, {
         opacity: 1,
-        delay: 0,
+        delay: 0.75,
       })
       .set(fromLogoRef.current, {
         opacity: 1,
@@ -91,18 +103,45 @@ export function Main() {
           ease: 'power2.easeOut',
         },
         '-=1.5',
-      );
+      )
+      .to(messageRef.current, {
+        duration: () => {
+          // Tempo fixo baseado no dispositivo
+          return window.innerWidth < 768 ? 150 : 120; // 150s no mobile, 120s no desktop
+        },
+        top: () => {
+          if (!messageRef.current) return '-200%';
+          const contentHeight = messageRef.current.scrollHeight;
+          return `-${contentHeight}px`;
+        },
+        ease: 'none',
+        delay: 0,
+      })
+      .to(messageRef.current, {
+        duration: 2,
+        opacity: 0,
+        ease: 'power2.easeOut',
+      });
+
+    return () => {
+      tl.kill();
+
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
   }, []);
 
   return (
     <main className="relative flex h-dvh w-full flex-col items-center justify-center overflow-hidden">
-      <ScreenSizeViewer />
       <LongTimeAgo intro1={intro1Ref} intro2={intro2Ref} />
       <TheBestPerson
         logoRef={mainLogoRef}
         fromRef={fromLogoRef}
         galaxyRef={galaxyLogoRef}
       />
+      <TheMessage messageRef={messageRef} />
     </main>
   );
 }
